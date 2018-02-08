@@ -1,0 +1,38 @@
+{
+    "name": "olla/operation",
+    "type": "library",
+    "description": "Olla APi",
+    "keywords": ["REST", "GRAPHQL"],
+    "homepage": "https://olla.tech/api",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Olla Tech",
+            "email": "contact@olla.tech",
+            "homepage": "https://olla.tech"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "olla/prisma": "*"
+    },
+    "require-dev": {
+        
+    },
+    "conflict": {
+    },
+    "suggest": {
+        
+    },
+    "autoload": {
+        "psr-4": { "Olla\\Operation\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Olla\\Operation\\Tests\\": "tests/" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}

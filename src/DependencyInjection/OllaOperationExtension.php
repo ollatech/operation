@@ -26,13 +26,7 @@ final class OllaOperationExtension extends Extension implements PrependExtension
     {
         $this->reconfig($configs, $container);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Operations/config'));
-        $loader->load('collection.xml');
-        $loader->load('subresource.xml');
-        $loader->load('search.xml');
-        $loader->load('item.xml');
-        $loader->load('create.xml');
-        $loader->load('update.xml');
-        $loader->load('delete.xml');
+        $loader->load('operation.xml');
     }
     private function reconfig(array $configs, ContainerBuilder $container) {
         $configuration = new Configuration();

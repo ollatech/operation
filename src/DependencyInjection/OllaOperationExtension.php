@@ -23,7 +23,7 @@ final class OllaOperationExtension extends Extension implements PrependExtension
        
     }
     public function load(array $configs, ContainerBuilder $container)
-    {
+    { 
         $this->reconfig($configs, $container);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Operations/config'));
         $loader->load('operation.xml');

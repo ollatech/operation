@@ -1,5 +1,5 @@
 <?php
-namespace Olla\Operation\Resolver;
+namespace Olla\Operation\Core;
 
 
 use Olla\Operation\Firewall as  FirewallComponent;

@@ -1,5 +1,5 @@
 <?php
-namespace Olla\Operation\Resolver;
+namespace Olla\Operation\Core;
 
 use Olla\Prisma\Metadata;
 use Olla\Operation\Resolver;
@@ -22,22 +22,30 @@ final class Operation implements Resolver
         $this->response = $response;
     }
 
-    public function resolve(string $carrier, string $operationId, array $args = []) {
-        if(!$this->firewall->canAccess($operationId)) {
+    public function resolve(array $args = [], $request) {
+        if(!$this->firewall->canAccess($args['operation_id'])) {
             throw new Exception("Access Denied", 1);
         }
         $response = [];
-        if(null !== $controller = $this->find($carrier, $operationId)) {
+        if(null !== $operation = $this->operation($args['carrier'], $args['operation_id'])) {
+            if(null === $controllerId = $operation->getController()) {
+                return;
+            }
+            $controller = $this->service($controllerId);
             if (is_callable($controller))
             {
-                $result = call_user_func_array($controller, [$args]);
+                $result = call_user_func_array($controller, [$operation, $request]);
+                if(!is_array($result)) {
+                    throw new \Exception(sprintf("%s Should return an array", $controllerId));
+                }
                 $response = array_merge($response, $result);
             }
         } 
-        return $this->response->render($carrier, $operationId, $response);
+        return $this->response->render($args, $response);
     }
-  
-    private function find(string $carrier, string $operationId) {
+
+    private function operation(string $carrier, string $operationId) {
+        $args = [];
         $operation = null;
         switch ($carrier) {
             case 'restapi':
@@ -59,13 +67,7 @@ final class Operation implements Resolver
         if(null === $operation) {
             return;
         }
-        if(null === $serviceId = $operation->getController()) {
-            return;
-        }
-        if(null !== $service = $this->service($serviceId)) {
-            return $service;
-        }
-        return;
+        return $operation;
     }
 
     protected function service(string $serviceId) {

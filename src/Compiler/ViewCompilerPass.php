@@ -15,14 +15,12 @@ final class ViewCompilerPass implements CompilerPassInterface
         foreach ($taggesAction as $id => $tags) {
             $serviceId = $id;
             $alias = null;
-          
             foreach ($tags as $tag) {
                 if(isset($tag['alias'])) {
                     $alias = $tag['alias'];
                 }
-               
             }
-            if(!$context || !$design) {
+            if(!$alias) {
                 continue;
             }
             $action = $container->findDefinition($id);
@@ -31,6 +29,5 @@ final class ViewCompilerPass implements CompilerPassInterface
                 'addFormat', [$alias, $serviceId]
             );
         }
-
     }
 }

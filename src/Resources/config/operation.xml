@@ -6,8 +6,8 @@
 		<service id="olla.operation" class="Olla\Operation\Core\Operation" >
 			<argument type="service" id="service_container" />
 			<argument type="service" id="olla.metadata" />
-			<argument type="service" id="Olla\Operation\Core\Firewall" />
-			<argument type="service" id="Olla\Operation\Core\Response" />
+			<argument type="service" id="olla.firewall" />
+			<argument type="service" id="olla.response" />
 		</service>
 		<service id="olla.response" class="Olla\Operation\Core\Response" >
 			<argument type="service" id="service_container" />

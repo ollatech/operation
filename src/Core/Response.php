@@ -1,5 +1,5 @@
 <?php
-namespace Olla\Operation\Resolver;
+namespace Olla\Operation\Core;
 
 
 use Olla\Operation\Response as ResponseComponent;
@@ -13,15 +13,17 @@ final class Response implements ResponseComponent
 		$this->container = $container;
 	}
 
-	public function render(string $format, string $carrier, string $operationId, array $response = []) {
+	public function render(array $args = [], array $response = []) {
+		$format = $args['format'];
+		$carrier = $args['carrier'];
+		$operationId = $args['operation_id'];
 		if(isset($this->views[$format])) {
 			$serviceId = $this->views[$format];
 			if(null !== $service = $this->service($serviceId)) {
-				return $service->render($carrier, $operationId, $response);
+				return $service->render($format, $response, $operationId);
 			}
-			
 		}
-		throw new Exception("Error Processing Request", 1);
+		throw new \Exception("Format renderer not found", 1);
 	}
 	public function addFormat(string $format, $serviceId) {
 		$this->views[$format] = $serviceId;

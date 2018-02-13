@@ -14,6 +14,7 @@ final class Response implements ResponseComponent
 	}
 
 	public function render(array $args = [], array $response = []) {
+		print_r($this->views);
 		$format = $args['format'];
 		$carrier = $args['carrier'];
 		$operationId = $args['operation_id'];

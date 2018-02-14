@@ -14,14 +14,13 @@ final class Response implements ResponseComponent
 	}
 
 	public function render(array $args = [], array $response = []) {
-		print_r($this->views);
 		$format = $args['format'];
 		$carrier = $args['carrier'];
 		$operationId = $args['operation_id'];
 		if(isset($this->views[$format])) {
 			$serviceId = $this->views[$format];
 			if(null !== $service = $this->service($serviceId)) {
-				return $service->render($format, $response, $operationId);
+				return $service->render($args, $response);
 			}
 		}
 		throw new \Exception("Format renderer not found", 1);

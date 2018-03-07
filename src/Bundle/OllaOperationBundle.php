@@ -1,7 +1,7 @@
 <?php
-namespace Olla\Operation;
+namespace Olla\Operation\Bundle;
 
-use Olla\Operation\Compiler\ViewCompilerPass;
+use Olla\Operation\Bundle\Compiler\ViewCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

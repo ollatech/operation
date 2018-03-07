@@ -1,6 +1,6 @@
 <?php
 
-namespace Olla\Operation\Compiler;
+namespace Olla\Operation\Bundle\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -10,7 +10,7 @@ final class ViewCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-    	$service = $container->findDefinition('olla.response');
+    	$service = $container->findDefinition('olla.data_converter');
         $taggesAction = $container->findTaggedServiceIds('olla.format', true);
         foreach ($taggesAction as $id => $tags) {
             $serviceId = $id;

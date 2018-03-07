@@ -1,6 +1,6 @@
 <?php
 
-namespace Olla\Operation\Compiler;
+namespace Olla\Operation\Bundle\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

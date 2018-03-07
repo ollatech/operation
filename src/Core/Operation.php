@@ -6,6 +6,8 @@ use Olla\Operation\Resolver;
 use Olla\Operation\Response;
 use Olla\Operation\Firewall;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Olla\Flow\View;
+use Olla\Theme\View as Theme;
 
 final class Operation implements Resolver
 {
@@ -13,20 +15,22 @@ final class Operation implements Resolver
     protected $container;
     protected $metatada;
     protected $firewall;
-    protected $response;
+    protected $converter;
+    protected $theme;
 
-    public function __construct(ContainerInterface $container, Metadata $metadata, Firewall $firewall, Response $response) {
+    public function __construct(ContainerInterface $container, Metadata $metadata, Firewall $firewall, Response $converter, Theme $theme) {
         $this->container = $container;
         $this->metadata = $metadata;
         $this->firewall = $firewall;
-        $this->response = $response;
+        $this->converter = $converter;
+        $this->theme = $theme;
     }
 
     public function resolve(array $args = [], $request) {
         if(!$this->firewall->canAccess($args['operation_id'])) {
             throw new Exception("Access Denied", 1);
         }
-        $response = [];
+        $props = [];
         if(null !== $operation = $this->operation($args['carrier'], $args['operation_id'])) {
             if(null === $controllerId = $operation->getController()) {
                 return;
@@ -35,14 +39,38 @@ final class Operation implements Resolver
             if (is_callable($controller))
             {
                 $result = call_user_func_array($controller, [$operation, $request]);
+                if($result instanceof View) {
+                    return $result;
+                }
                 if(!is_array($result)) {
                     throw new \Exception(sprintf("%s Should return an array", $controllerId));
                 }
-                $response = array_merge($response, $result);
+                $props = array_merge($props, $result);
             }
         } 
-        return $this->response->render($args, $response);
+
+        switch ($args['format']) {
+            case 'html':
+            return $this->view($operation, $args, $props);
+            break;
+            default:
+            return $this->converter->render($args, $props);
+            break;
+        }
     }
+    private function view($operation, $args, $props) {
+        $template = $operation->getTemplate();
+        $assets = $operation->getAssets();
+        $react = $operation->getReact();
+        $options = $operation->getOptions();
+        $context = [
+            'resource' => $operation->getResource(),
+            'action' => $operation->getAction()
+        ];
+        return $this->theme->render($template, $props, $assets, $react, $options, $context);
+    }
+
+
 
     private function operation(string $carrier, string $operationId) {
         $args = [];

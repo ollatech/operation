@@ -7,9 +7,10 @@
 			<argument type="service" id="service_container" />
 			<argument type="service" id="olla.metadata" />
 			<argument type="service" id="olla.firewall" />
-			<argument type="service" id="olla.response" />
+			<argument type="service" id="olla.data_converter" />
+			<argument type="service" id="olla.theme" />
 		</service>
-		<service id="olla.response" class="Olla\Operation\Core\Response" >
+		<service id="olla.data_converter" class="Olla\Operation\Core\Response" >
 			<argument type="service" id="service_container" />
 		</service>
 		<service id="olla.firewall" class="Olla\Operation\Core\Firewall" >

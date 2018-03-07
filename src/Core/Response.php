@@ -25,6 +25,8 @@ final class Response implements ResponseComponent
 		}
 		throw new \Exception("Format renderer not found", 1);
 	}
+
+	
 	public function addFormat(string $format, $serviceId) {
 		$this->views[$format] = $serviceId;
 	}
